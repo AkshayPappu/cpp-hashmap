@@ -67,5 +67,13 @@ int main() {
     std::cout << "banana: " << map["banana"] << std::endl;
     std::cout << "orange: " << map["orange"] << std::endl;
 
+    // Test move constructor and assignment operator
+    HashMap<std::string, int> map2 = std::move(map);
+    std::cout << "\nAfter move:" << std::endl;
+    std::cout << "Size: " << map2.size() << std::endl;
+    std::cout << "Is empty? " << std::boolalpha << map2.empty() << std::endl;
+    
+    
+
     return 0;
 }

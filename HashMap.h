@@ -19,6 +19,32 @@ class HashMap {
     public:
         HashMap(int capacity = 1000) : buckets(capacity), size_(0), capacity_(capacity) {}
 
+        HashMap(HashMap&& other) noexcept 
+            : buckets(std::move(other.buckets)), size_(other.size_), capacity_(other.capacity_) {
+                other.size_ = 0;
+                other.capacity_ = 0;
+            }
+        
+        HashMap& operator=(HashMap&& other) noexcept {
+            if (this != & other) {
+                buckets = std::move(other.buckets);
+                size_ = other.size_;
+                capacity_ = other.capacity_;
+                other.size_ = 0;
+                other.capacity_ = 0;
+            }
+            return *this;
+        }
+
+        HashMap(const HashMap&) = delete;
+        HashMap& operator=(const HashMap&) = delete;
+
+        ~HashMap() noexcept {
+            buckets.clear();
+            size_ = 0;
+            capacity_ = 0;
+        }
+
         void insert(const K& key, const V& value) {            
             V* existingValue = get(key);
             if (existingValue != nullptr) {
@@ -99,7 +125,7 @@ class HashMap {
             return size_ == 0;
         }
 
-        void clear() {
+        void clear() noexcept {
             for (auto& bucket : buckets) {
                 bucket.clear();
             }
